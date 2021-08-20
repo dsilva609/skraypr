@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skraypr", "Skraypr\Skraypr.csproj", "{0D8C145B-8D47-4369-8A9A-7FAAB3B4CFB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skraypr.Test", "Skraypr.Test\Skraypr.Test.csproj", "{E5C62CF8-4719-4F64-B8CF-47A9CACE5CF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D8C145B-8D47-4369-8A9A-7FAAB3B4CFB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D8C145B-8D47-4369-8A9A-7FAAB3B4CFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D8C145B-8D47-4369-8A9A-7FAAB3B4CFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D8C145B-8D47-4369-8A9A-7FAAB3B4CFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5C62CF8-4719-4F64-B8CF-47A9CACE5CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5C62CF8-4719-4F64-B8CF-47A9CACE5CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5C62CF8-4719-4F64-B8CF-47A9CACE5CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5C62CF8-4719-4F64-B8CF-47A9CACE5CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5ADC20DD-7D96-452F-8BAF-AB1D9C92EC47}
+	EndGlobalSection
+EndGlobal
