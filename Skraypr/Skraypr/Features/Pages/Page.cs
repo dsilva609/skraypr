@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using OpenQA.Selenium.Chrome;
 using Skraypr.Features.Enums;
 using System;
 
@@ -22,7 +23,7 @@ namespace Skraypr.Features.Pages
             _resourceAddress = resourceAddress;
         }
 
-        public abstract void ExecutePage();
+        public abstract void ExecutePage(ChromeDriver driver);
 
         public PageResult GetPageResult()
             => new()

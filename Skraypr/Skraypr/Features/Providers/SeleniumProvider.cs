@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium.Chrome;
+using System;
 
 namespace Skraypr.Features.Providers
 {
@@ -6,9 +7,21 @@ namespace Skraypr.Features.Providers
     {
         public ChromeDriver Driver { get; }
 
-        public SeleniumProvider() => Driver = new ChromeDriver();
+        public SeleniumProvider()
+        {
+            var chromeOptions = new ChromeOptions();
+            //chromeOptions = $"{Environment.CurrentDirectory}/chromedriver.exe";
+            //chromeOptions.AddArguments("headless");
 
-        public void CleanUpDriver() => Driver.Dispose();
+            //var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            Driver = new ChromeDriver(Environment.CurrentDirectory, chromeOptions);
+        }
+
+        public void CleanUpDriver()
+        {
+            Driver.Close();
+            Driver.Dispose();
+        }
 
         public void InitializeDriver(string baseUrl) => Driver.Url = baseUrl;
     }

@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using OpenQA.Selenium.Chrome;
 using Skraypr.Features.Enums;
 using Skraypr.Features.Pages;
 using System;
@@ -54,8 +53,6 @@ namespace Skraypr.Features.Providers
             return GenerateResults(stopWatch.Elapsed);
         }
 
-        public ChromeDriver GetDriver() => _seleniumProvider.Driver;
-
         public bool InitializeAndValidatePages()
         {
             if (!_pages.Any())
@@ -80,7 +77,7 @@ namespace Skraypr.Features.Providers
 
             try
             {
-                page.ExecutePage();
+                page.ExecutePage(_seleniumProvider.Driver);
             }
             catch (Exception e)
             {

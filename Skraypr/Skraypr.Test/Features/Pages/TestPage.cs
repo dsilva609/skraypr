@@ -1,17 +1,17 @@
-﻿using Skraypr.Features.Pages;
-using System;
+﻿using OpenQA.Selenium.Chrome;
+using Skraypr.Features.Pages;
 
 namespace Skraypr.Test.Features.Pages
 {
     public class TestPage : Page
     {
-        public TestPage() : base(1, "resourceAddress")
+        public TestPage(string resourceAddress) : base(1, resourceAddress)
         {
         }
 
-        public override void ExecutePage()
+        public override void ExecutePage(ChromeDriver driver)
         {
-            throw new NotImplementedException();
+            driver.Navigate().GoToUrl($"{driver.Url}/{_resourceAddress}");
         }
     }
 }

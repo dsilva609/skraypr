@@ -6,7 +6,7 @@ namespace Skraypr.Test.Features.Providers
 {
     public class TestProvider : PageProvider
     {
-        public TestProvider(string baseUrl, IEnumerable<Page> pages) : base(baseUrl, pages, new SeleniumProvider())
+        public TestProvider(string baseUrl, IEnumerable<Page> pages, ISeleniumProvider seleniumProvider) : base(baseUrl, pages, seleniumProvider)
         {
         }
     }
