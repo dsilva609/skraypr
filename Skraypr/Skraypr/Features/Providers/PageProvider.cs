@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using OpenQA.Selenium.Chrome;
 using Skraypr.Features.Enums;
 using Skraypr.Features.Pages;
 using System;
@@ -11,15 +12,17 @@ namespace Skraypr.Features.Providers
     public abstract class PageProvider
     {
         private readonly string _baseUrl;
+        private readonly ISeleniumProvider _seleniumProvider;
         private IEnumerable<Page> _pages;
 
-        protected PageProvider(string baseUrl, IEnumerable<Page> pages)
+        protected PageProvider(string baseUrl, IEnumerable<Page> pages, ISeleniumProvider seleniumProvider)
         {
             Guard.Against.NullOrWhiteSpace(baseUrl, nameof(baseUrl));
             Guard.Against.NullOrEmpty(pages, nameof(pages));
 
             _baseUrl = baseUrl;
             _pages = pages;
+            _seleniumProvider = seleniumProvider;
 
             InitializeAndValidatePages();
         }
@@ -29,12 +32,9 @@ namespace Skraypr.Features.Providers
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            //--initialize selenium driver
-            InitializeDriver();
+            _seleniumProvider.InitializeDriver(_baseUrl);
 
-            //--initialize pages
-            //--navigate to base url
-            //--TODO
+            InitializeExecution();
 
             foreach (var page in _pages)
             {
@@ -49,11 +49,12 @@ namespace Skraypr.Features.Providers
 
             stopWatch.Stop();
 
-            CleanUpPageDriver();
-            //--clean up selenium driver
+            _seleniumProvider.CleanUpDriver();
 
             return GenerateResults(stopWatch.Elapsed);
         }
+
+        public ChromeDriver GetDriver() => _seleniumProvider.Driver;
 
         public bool InitializeAndValidatePages()
         {
@@ -71,8 +72,6 @@ namespace Skraypr.Features.Providers
 
             return true;
         }
-
-        private void CleanUpPageDriver() => throw new NotImplementedException();
 
         private PageStatusEnum ExecutePage(Page page)
         {
@@ -115,6 +114,6 @@ namespace Skraypr.Features.Providers
             return result;
         }
 
-        private void InitializeDriver() => throw new NotImplementedException();
+        private void InitializeExecution() => _seleniumProvider.Driver.Navigate().GoToUrl(_baseUrl);
     }
 }
