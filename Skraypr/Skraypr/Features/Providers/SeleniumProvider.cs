@@ -10,10 +10,8 @@ namespace Skraypr.Features.Providers
         public SeleniumProvider()
         {
             var chromeOptions = new ChromeOptions();
-            //chromeOptions = $"{Environment.CurrentDirectory}/chromedriver.exe";
             //chromeOptions.AddArguments("headless");
 
-            //var chromeDriverService = ChromeDriverService.CreateDefaultService();
             Driver = new ChromeDriver(Environment.CurrentDirectory, chromeOptions);
         }
 
