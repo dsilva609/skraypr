@@ -6,9 +6,10 @@ namespace Skraypr.Features.Pages
 {
     public abstract class Page
     {
-        private readonly string _resourceAddress;
+        protected readonly string _resourceAddress;
         public TimeSpan ExecutionDuration { get; private set; }
         public bool IsComplete { get; private set; }
+        public string Message { get; private set; }
         public int PageOrder { get; }
         public PageStatusEnum PageStatus { get; private set; }
 
@@ -23,6 +24,14 @@ namespace Skraypr.Features.Pages
 
         public abstract void ExecutePage();
 
+        public PageResult GetPageResult()
+            => new()
+            {
+                Duration = ExecutionDuration,
+                ErrorMessage = Message,
+                PageStatus = PageStatus
+            };
+
         public void SetCompleted(TimeSpan duration)
         {
             ExecutionDuration = duration;
@@ -31,6 +40,10 @@ namespace Skraypr.Features.Pages
             SetPageStatus(PageStatusEnum.Complete);
         }
 
-        public void SetPageStatus(PageStatusEnum pageStatus) => PageStatus = pageStatus;
+        public void SetPageStatus(PageStatusEnum pageStatus, string message = "")
+        {
+            Message = message;
+            PageStatus = pageStatus;
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using Skraypr.Features.Enums;
 using Skraypr.Features.Pages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Skraypr.Features.Providers
@@ -22,8 +24,11 @@ namespace Skraypr.Features.Providers
             InitializeAndValidatePages();
         }
 
-        public void Execute()
+        public ExecutionResult Execute()
         {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             //--initialize selenium driver
             InitializeDriver();
 
@@ -33,24 +38,30 @@ namespace Skraypr.Features.Providers
 
             foreach (var page in _pages)
             {
-                ExecutePage();
+                var pageResult = ExecutePage(page);
+
+                if (pageResult == PageStatusEnum.Errored)
+                {
+                    //--whoopsie doodle
+                    break;
+                }
             }
 
-            /*  loop through pages
-                - start page timer
-                - execute page
-                - set final page status
-                - catch errors
-                    - clean up selenium driver
-                - return page results
-            */
+            stopWatch.Stop();
 
             CleanUpPageDriver();
             //--clean up selenium driver
+
+            return GenerateResults(stopWatch.Elapsed);
         }
 
         public bool InitializeAndValidatePages()
         {
+            if (!_pages.Any())
+            {
+                throw new InvalidOperationException("No pages added for execution");
+            }
+
             if (_pages.Count() != _pages.Distinct().Count())
             {
                 throw new InvalidOperationException("Pages must have a distinct page order.");
@@ -63,7 +74,46 @@ namespace Skraypr.Features.Providers
 
         private void CleanUpPageDriver() => throw new NotImplementedException();
 
-        private void ExecutePage() => throw new NotImplementedException();
+        private PageStatusEnum ExecutePage(Page page)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            try
+            {
+                page.ExecutePage();
+            }
+            catch (Exception e)
+            {
+                stopwatch.Stop();
+
+                page.SetCompleted(stopwatch.Elapsed);
+                page.SetPageStatus(PageStatusEnum.Errored, e.Message);
+
+                return page.PageStatus;
+            }
+
+            stopwatch.Stop();
+
+            page.SetCompleted(stopwatch.Elapsed);
+            page.SetPageStatus(PageStatusEnum.Complete);
+
+            return page.PageStatus;
+        }
+
+        private ExecutionResult GenerateResults(TimeSpan providerExecutionDuration)
+        {
+            var result = new ExecutionResult
+            {
+                ExecutionStatus = _pages.LastOrDefault().PageStatus == PageStatusEnum.Complete
+                    ? ProviderStatusEnum.Successful
+                    : ProviderStatusEnum.Errored,
+                PageResults = _pages.Select(page => page.GetPageResult()),
+                TotalDuration = providerExecutionDuration
+            };
+
+            return result;
+        }
 
         private void InitializeDriver() => throw new NotImplementedException();
     }
